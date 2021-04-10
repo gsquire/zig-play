@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -eu
+
+GOARCH=amd64 GOOS=linux go build
