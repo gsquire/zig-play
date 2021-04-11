@@ -19,6 +19,10 @@ a cheap option considering their generous free tier.
 
 It is currently set up to simply run a single Zig source file. (i.e. `zig run source.zig`)
 
+> Are there any timeouts?
+
+If your code doesn't build within 10 seconds, the server will quit your request.
+
 > Why does the page look so bad?
 
 I'm clearly more of a server-side programmer. Any styling changes are very much appreciated!
