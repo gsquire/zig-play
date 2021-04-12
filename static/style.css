@@ -32,3 +32,8 @@ button {
     border: none;
     background: lightblue;
 }
+@media only screen and (max-width: 800px) {
+  textarea, #stdout {
+    width: calc(80vw - 2rem);
+  }
+}
