@@ -24,6 +24,7 @@ textarea {
 #stdout {
   border: 1px dashed gray;
   overflow: scroll;
+  white-space: pre;
 }
 button {
     font-size: 1rem;

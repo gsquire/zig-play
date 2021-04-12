@@ -27,7 +27,7 @@
                 } else if (!res.ok) {
                   msg = 'An error occurred:\n' + text;
                 }
-                stdout.innerHTML = msg.split("\n").map(line => `<span style="display: block">${line}</span>`).reduce((a,b) => a + b);
+                stdout.innerHTML = msg;
               } catch (e) {
                 stdout.innerHTML = '<span>Could not connect to server.</span>';
               }
