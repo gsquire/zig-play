@@ -40,7 +40,13 @@
       <main>
         <h1>Zig Playground</h1>
         <p>Source:</p>
-        <textarea id="code" name="code" rows="5" required="" placeholder="const std = ..." spellcheck="false"></textarea>
+        <textarea id="code" name="code" rows="5" required="" placeholder="const std = ..." spellcheck="false">
+const std = @import("std");
+
+pub fn main() void {
+  std.debug.print("Hello, {}!", .{"world"});
+}
+</textarea>
         <button type="submit" onclick="runCode()">Compile</button>
         <div id="stdout"></div>
       </main>
