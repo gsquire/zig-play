@@ -1,0 +1,33 @@
+* {
+    font-family: sans-serif;
+}
+main {
+    display: block;
+    width: 80vw;
+    margin: 0 auto;
+}
+h1 {
+    font-size: 2.5rem;
+}
+textarea, #stdout {
+    display: block;
+    padding: 1rem;
+    margin: 2rem 0rem;
+    font-family: monospace;
+    width: 50rem;
+    height: 10rem;
+}
+textarea {
+    border: none;
+    background: #ddd;
+}
+#stdout {
+  border: 1px dashed gray;
+  overflow: scroll;
+}
+button {
+    font-size: 1rem;
+    padding: 0.6rem;
+    border: none;
+    background: lightblue;
+}
