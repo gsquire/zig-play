@@ -19,7 +19,18 @@
                 },
                 body: code,
                 redirect: 'follow'
-              }).then(res => res.text());
+              }).then(res => {
+                if (res.ok) {
+                  return res.text()
+                } else if (res.status === 429) {
+                  // Too many requests
+                  return 'Too many requests. Please wait a minute then try again.';
+                } else {
+                  // Probably a compilation error
+                  return res.text().then(t => 'An error occurred:\n' + t);
+                }
+              })
+                .catch(_ => "Could not connect to server");
               stdout.innerHTML = res.split("\n").map(line => `<span style="display: block">${line}</span>`).reduce((a,b) => a + b, "");
             }
           }
