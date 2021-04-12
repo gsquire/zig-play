@@ -14,8 +14,8 @@ textarea, #stdout {
     padding: 1rem;
     margin: 2rem 0rem;
     font-family: monospace;
-    width: 50rem;
-    height: 10rem;
+    width: 50vw;
+    height: 20vh;
 }
 textarea {
     border: none;
