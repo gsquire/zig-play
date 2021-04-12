@@ -34,7 +34,11 @@ func Run(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	defer os.RemoveAll(dir)
 
 	tmpSource := filepath.Join(dir, "play.zig")
-	zigSource := r.FormValue("code")
+	zigSource, err := ioutil.ReadAll(r.Body)
+        if err != nil {
+          http.Error(w, "reading body", http.StatusInternalServerError)
+        }
+
 	if err := ioutil.WriteFile(tmpSource, []byte(zigSource), 0666); err != nil {
 		http.Error(w, "copying zig source", http.StatusInternalServerError)
 		return
