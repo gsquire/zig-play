@@ -1,53 +1,53 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Zig Playground</title>
-        <link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
-        <link href="/style.css" rel="stylesheet" type="text/css"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script>
-          async function runCode() {
-            const element = document.getElementById('code');
-            const stdout = document.getElementById('stdout');
-            if (element && stdout) {
-              const code = element.value;
-              try {
-                const res = await fetch('/server/run/', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'text/plain'
-                  },
-                  body: code
-                });
-                const text = await res.text();
-                let msg = text;
-                if (res.status === 429) {
-                  msg = 'Too many requests. Please wait a minute then try again.';
-                } else if (!res.ok) {
-                  msg = 'An error occurred:\n' + text;
-                }
-                stdout.innerHTML = msg;
-              } catch (e) {
-                stdout.innerHTML = '<span>Could not connect to server.</span>';
-              }
-            }
-          }
-        </script>
-    </head>
-    <body>
-      <main>
-        <h1>Zig Playground</h1>
-        <p>Source:</p>
-        <textarea id="code" name="code" rows="5" required="" placeholder="const std = ..." spellcheck="false">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Zig Playground</title>
+		<link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
+		<link rel="stylesheet" href="/style.css" type="text/css" />
+		<script>
+		  async function runCode() {
+			const element = document.getElementById('code');
+			const stdout = document.getElementById('stdout');
+			if (element && stdout) {
+			  const code = element.value;
+			  try {
+				const res = await fetch('/server/run/', {
+				  method: 'POST',
+				  headers: {
+					'Content-Type': 'text/plain'
+				  },
+				  body: code
+				});
+				const text = await res.text();
+				let msg = text;
+				if (res.status === 429) {
+				  msg = 'Too many requests. Please wait a minute then try again.';
+				} else if (!res.ok) {
+				  msg = 'An error occurred:\n' + text;
+				}
+				stdout.innerHTML = msg;
+			  } catch (e) {
+				stdout.innerHTML = 'Could not connect to server.';
+			  }
+			}
+		  }
+		</script>
+	</head>
+	<body>
+	  <main>
+		<h1>Zig Playground</h1>
+		<p>Source:</p>
+<textarea id="code" placeholder="const std = ..." spellcheck="false">
 const std = @import("std");
 
 pub fn main() void {
   std.debug.print("Hello, {}!", .{"world"});
 }
 </textarea>
-        <button type="submit" onclick="runCode()">Compile</button>
-        <div id="stdout"></div>
-      </main>
-    </body>
+		<button onclick="runCode()">Compile</button>
+		<div id="stdout"></div>
+	  </main>
+	</body>
 </html>
