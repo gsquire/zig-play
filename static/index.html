@@ -7,32 +7,32 @@
 		<link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
 		<link rel="stylesheet" href="/style.css" type="text/css" />
 		<script>
-		  async function runCode() {
+		async function runCode() {
 			const element = document.getElementById('code');
 			const stdout = document.getElementById('stdout');
 			if (element && stdout) {
-			  const code = element.value;
-			  try {
-				const res = await fetch('/server/run/', {
-				  method: 'POST',
-				  headers: {
-					'Content-Type': 'text/plain'
-				  },
-				  body: code
-				});
-				const text = await res.text();
-				let msg = text;
-				if (res.status === 429) {
-				  msg = 'Too many requests. Please wait a minute then try again.';
-				} else if (!res.ok) {
-				  msg = 'An error occurred:\n' + text;
+				const code = element.value;
+				try {
+					const res = await fetch('/server/run/', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'text/plain'
+						},
+						body: code
+					});
+					const text = await res.text();
+					let msg = text;
+					if (res.status === 429) {
+						msg = 'Too many requests. Please wait a minute then try again.';
+					} else if (!res.ok) {
+						msg = 'An error occurred:\n' + text;
+					}
+					stdout.innerHTML = msg;
+				} catch (e) {
+					stdout.innerHTML = 'Could not connect to server.';
 				}
-				stdout.innerHTML = msg;
-			  } catch (e) {
-				stdout.innerHTML = 'Could not connect to server.';
-			  }
 			}
-		  }
+		}
 		</script>
 	</head>
 	<body>
