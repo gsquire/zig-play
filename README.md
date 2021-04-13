@@ -3,7 +3,7 @@
 This is a rudimentary online compiler for the [Zig](https://ziglang.org) programming language. It
 is inspired by the [Go](https://play.golang.org) playground.
 
-Currently served from [here](https://zig-play-a9lwj.ondigitalocean.app/).
+It's currently served from this [page](https://zig-play-7mt7d.ondigitalocean.app/).
 
 ### Setup
 The main server is a Go binary that serves up a single HTML page that allows you to enter your Zig
