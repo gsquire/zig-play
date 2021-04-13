@@ -25,6 +25,13 @@ func Run(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
+	// Get the source code from the request
+	zigSource, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "reading body", http.StatusInternalServerError)
+		return
+	}
+
 	// Set up the temporary resources.
 	dir, err := ioutil.TempDir("", "playground")
 	if err != nil {
@@ -34,7 +41,6 @@ func Run(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	defer os.RemoveAll(dir)
 
 	tmpSource := filepath.Join(dir, "play.zig")
-	zigSource := r.FormValue("code")
 	if err := ioutil.WriteFile(tmpSource, []byte(zigSource), 0666); err != nil {
 		http.Error(w, "copying zig source", http.StatusInternalServerError)
 		return

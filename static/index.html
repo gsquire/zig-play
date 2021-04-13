@@ -1,21 +1,53 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Zig Playground</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-        <h2>Zig Playground</h2>
-        <form class ="ms-auto" action="/server/run" method="POST">
-            <div>
-                <label class="form-label" for="code">Source:</label>
-                <textarea class="pb-auto form-control" id="code" name="code" rows="5" required="" placeholder="const std = ..."></textarea>
-            </div>
-            <div>
-                <button type="submit" class="pt-auto btn btn-primary">Compile</button>
-            </div>
-        </form>
-    </body>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Zig Playground</title>
+		<link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
+		<link rel="stylesheet" href="/style.css" type="text/css" />
+		<script>
+		async function runCode() {
+			const element = document.getElementById('code');
+			const stdout = document.getElementById('stdout');
+			if (element && stdout) {
+				const code = element.value;
+				try {
+					const res = await fetch('/server/run/', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'text/plain'
+						},
+						body: code
+					});
+					const text = await res.text();
+					let msg = text;
+					if (res.status === 429) {
+						msg = 'Too many requests. Please wait a minute then try again.';
+					} else if (!res.ok) {
+						msg = 'An error occurred:\n' + text;
+					}
+					stdout.innerHTML = msg;
+				} catch (e) {
+					stdout.innerHTML = 'Could not connect to server.';
+				}
+			}
+		}
+		</script>
+	</head>
+	<body>
+	  <main>
+		<h1>Zig Playground</h1>
+		<p>Source:</p>
+<textarea id="code" placeholder="const std = ..." spellcheck="false">
+const std = @import("std");
+
+pub fn main() void {
+  std.debug.print("Hello, {}!", .{"world"});
+}
+</textarea>
+		<button onclick="runCode()">Compile</button>
+		<div id="stdout"></div>
+	  </main>
+	</body>
 </html>

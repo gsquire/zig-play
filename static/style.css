@@ -1,0 +1,39 @@
+* {
+	font-family: sans-serif;
+}
+main {
+	display: block;
+	width: 80vw;
+	margin: 0 auto;
+}
+h1 {
+	font-size: 2.5rem;
+}
+textarea, #stdout {
+	display: block;
+	padding: 1rem;
+	margin: 2rem 0;
+	font-family: monospace;
+	width: 50vw;
+	height: 20vh;
+}
+textarea {
+	border: none;
+	background: #ddd;
+}
+#stdout {
+	border: 1px dashed gray;
+	overflow: scroll;
+	white-space: pre;
+}
+button {
+	font-size: 1rem;
+	padding: 0.6rem;
+	border: none;
+	background: lightblue;
+}
+@media only screen and (max-width: 800px) {
+	textarea, #stdout {
+		width: calc(80vw - 2rem);
+	}
+}
