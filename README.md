@@ -25,10 +25,6 @@ It is currently set up to simply run a single Zig source file. (i.e. `zig run so
 
 If your code doesn't build within 10 seconds, the server will quit your request.
 
-> Why does the page look so bad?
-
-I'm clearly more of a server-side programmer. Any styling changes are very much appreciated!
-
 > Why am I getting rate-limited?
 
 You're allowed five compilations per minute which I think is fairly generous.

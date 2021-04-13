@@ -17,7 +17,7 @@ import (
 	"github.com/sethvargo/go-limiter/memorystore"
 )
 
-func Run(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func Run(w http.ResponseWriter, r *http.Request) {
 	// First, find out if we even have a zig executable in our path.
 	zigExe, err := exec.LookPath("zig")
 	if err != nil {
@@ -25,12 +25,14 @@ func Run(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		return
 	}
 
-	// Get the source code from the request
+	// Limit how big a source file can be. 5MB here.
+	r.Body = http.MaxBytesReader(w, r.Body, 5*1024)
 	zigSource, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, "reading body", http.StatusInternalServerError)
 		return
 	}
+	defer r.Body.Close()
 
 	// Set up the temporary resources.
 	dir, err := ioutil.TempDir("", "playground")
@@ -77,8 +79,10 @@ func main() {
 
 	router := httprouter.New()
 	router.ServeFiles("/*filepath", http.Dir("static"))
-	router.POST("/server/run", Run)
 
-	chain := alice.New(rlMiddle.Handle, handlers.CompressHandler).Then(router)
+	// We don't rate-limit the static files.
+	router.Handler(http.MethodPost, "/server/run", rlMiddle.Handle(http.HandlerFunc(Run)))
+
+	chain := alice.New(handlers.CompressHandler).Then(router)
 	log.Fatal(http.ListenAndServe(":8080", chain))
 }
