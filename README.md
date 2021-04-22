@@ -36,7 +36,7 @@ is causing issues to the service.
 
 > Will this always be available?
 
-To the best of my ability, I will try and keep this online. I may even buy a domain for it.
+To the best of my ability, I will try and keep this online.
 
 ### Contact
 Feel free to email me at my listed address with any other questions or comments.
