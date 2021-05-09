@@ -15,7 +15,6 @@ import (
 
 func securitySettings() *secure.Secure {
 	return secure.New(secure.Options{
-		//AllowedHosts:          []string{"zig-play\\.dev", "localhost"},
 		BrowserXssFilter:      true,
 		ContentTypeNosniff:    true,
 		ContentSecurityPolicy: "script-src $NONCE",
