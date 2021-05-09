@@ -10,7 +10,20 @@ import (
 	"github.com/justinas/alice"
 	"github.com/sethvargo/go-limiter/httplimit"
 	"github.com/sethvargo/go-limiter/memorystore"
+	"github.com/unrolled/secure"
 )
+
+func securitySettings() *secure.Secure {
+	return secure.New(secure.Options{
+		//AllowedHosts:          []string{"zig-play\\.dev", "localhost"},
+		BrowserXssFilter:      true,
+		ContentTypeNosniff:    true,
+		ContentSecurityPolicy: "script-src $NONCE",
+		FrameDeny:             true,
+		STSPreload:            true,
+		STSSeconds:            31536000,
+	})
+}
 
 func main() {
 	// Users can compile code 5 times per minute.
@@ -32,6 +45,6 @@ func main() {
 	// We don't rate-limit the static files.
 	router.Handler(http.MethodPost, "/server/run", rlMiddle.Handle(http.HandlerFunc(Run)))
 
-	chain := alice.New(handlers.CompressHandler).Then(router)
+	chain := alice.New(securitySettings().Handler, handlers.CompressHandler).Then(router)
 	log.Fatal(http.ListenAndServe(":8080", chain))
 }
