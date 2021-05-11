@@ -15,12 +15,11 @@ import (
 
 func securitySettings() *secure.Secure {
 	return secure.New(secure.Options{
-		BrowserXssFilter:      true,
-		ContentTypeNosniff:    true,
-		ContentSecurityPolicy: "script-src $NONCE",
-		FrameDeny:             true,
-		STSPreload:            true,
-		STSSeconds:            31536000,
+		BrowserXssFilter:   true,
+		ContentTypeNosniff: true,
+		FrameDeny:          true,
+		STSPreload:         true,
+		STSSeconds:         31536000,
 	})
 }
 
