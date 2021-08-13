@@ -37,6 +37,7 @@
      padding: 0.6rem;
      border: none;
      background: lightblue;
+     cursor: pointer;
 }
 
  @media only screen and (max-width: 800px) {
