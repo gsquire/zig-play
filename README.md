@@ -19,7 +19,7 @@ a cheap option considering their generous free tier.
 ### FAQ
 > What can this playground do?
 
-It is currently set up to simply run a single Zig source file. (i.e. `zig run source.zig`)
+It is currently set up to simply run and format a single Zig source file. (i.e. `zig run source.zig` & `zig fmt source.zig`)
 
 > Are there any timeouts?
 
