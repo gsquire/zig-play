@@ -25,7 +25,7 @@ func TestBodySizeLimit(t *testing.T) {
 			status, http.StatusInternalServerError)
 	}
 
-	expected := "reading body\n"
+	expected := "reading source\n"
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
 			rr.Body.String(), expected)
