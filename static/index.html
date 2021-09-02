@@ -1,81 +1,54 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Zig Playground</title>
-	<link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
-	<link rel="stylesheet" href="/style.css" type="text/css" />
-	<script>
-	async function runCode() {
-		const element = document.getElementById('code');
-		const stdout = document.getElementById('stdout');
-		if (element && stdout) {
-			const code = element.value;
-			try {
-				const res = await fetch('/server/run/', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'text/plain'
-					},
-					body: code
-				});
-				const text = await res.text();
-				let msg = text;
-				if (res.status === 429) {
-					msg = 'Too many requests. Please wait a minute and then try again.';
-				} else if (!res.ok) {
-					msg = 'An error occurred:\n' + text;
-				}
-				stdout.innerHTML = msg;
-			} catch(e) {
-				stdout.innerHTML = 'Could not connect to server.';
-			}
-		}
-	}
-	async function fmtCode() {
-		const element = document.getElementById('code');
-		const stdout = document.getElementById('stdout');
-		if (element && stdout) {
-			const code = element.value;
-			try {
-				const res = await fetch('/server/fmt/', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'text/plain'
-					},
-					body: code
-				});
-				const text = await res.text();
-				let msg = text;
-				if (res.status === 429) {
-					msg = 'Too many requests. Please wait a minute and then try again.';
-				} else if (!res.ok) {
-					msg = 'An error occurred:\n' + text;
-				} else if (res.ok) {	
-					msg = 'zig fmt successful\n';
-					element.value = text;
-				}
-				
-				stdout.innerHTML = msg;
-			} catch(e) {
-				stdout.innerHTML = 'Could not connect to server.'+e;
-			}
-		}
-	}
-	</script>
-</head>
-
-<body>
-	<main>
-		<h1>Zig Playground</h1>
-		<p>Source:</p>
-		<textarea id="code" placeholder="const std = ..." spellcheck="false">const std = @import("std"); pub fn main() void { std.debug.print("Hello, {s}!", .{"world"}); }</textarea>
-		<button onclick="runCode()">Compile</button>
-		<button onclick="fmtCode()">Format</button>
-		<div id="stdout"></div>
-	</main>
-</body>
-
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Zig Playground</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
+    <link rel="stylesheet" href="/style.css" type="text/css" />
+    <script>
+      async function execute(route) {
+        const element = document.getElementById('code');
+        const stdout = document.getElementById('stdout');
+        if (element && stdout) {
+          const code = element.value;
+          try {
+            const res = await fetch(route, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'text/plain'
+              },
+              body: code
+            });
+            const text = await res.text();
+            let msg = text;
+            if (res.status === 429) {
+              msg = 'Too many requests. Please wait a minute and then try again.';
+            } else if (!res.ok) {
+              msg = 'An error occurred:\n' + text;
+            }
+            stdout.innerHTML = msg;
+          } catch (e) {
+            stdout.innerHTML = 'Could not connect to server.';
+          }
+        }
+      }
+      async function runCode() {
+        execute('/server/run');
+      }
+      async function fmtCode() {
+        execute('/server/fmt');
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>Zig Playground</h1>
+      <p>Source:</p>
+      <textarea id="code" placeholder="const std = ..." spellcheck="false">const std = @import("std"); pub fn main() void { std.debug.print("Hello, {s}!", .{"world"}); }</textarea>
+      <button onclick="runCode()">Compile</button>
+      <button onclick="fmtCode()">Format</button>
+      <div id="stdout"></div>
+    </main>
+  </body>
 </html>
