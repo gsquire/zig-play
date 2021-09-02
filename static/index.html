@@ -34,6 +34,36 @@
 			}
 		}
 	}
+	async function fmtCode() {
+		const element = document.getElementById('code');
+		const stdout = document.getElementById('stdout');
+		if (element && stdout) {
+			const code = element.value;
+			try {
+				const res = await fetch('/server/fmt/', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'text/plain'
+					},
+					body: code
+				});
+				const text = await res.text();
+				let msg = text;
+				if (res.status === 429) {
+					msg = 'Too many requests. Please wait a minute and then try again.';
+				} else if (!res.ok) {
+					msg = 'An error occurred:\n' + text;
+				} else if (res.ok) {	
+					msg = 'zig fmt successful\n';
+					element.value = text;
+				}
+				
+				stdout.innerHTML = msg;
+			} catch(e) {
+				stdout.innerHTML = 'Could not connect to server.'+e;
+			}
+		}
+	}
 	</script>
 </head>
 
@@ -43,6 +73,7 @@
 		<p>Source:</p>
 		<textarea id="code" placeholder="const std = ..." spellcheck="false">const std = @import("std"); pub fn main() void { std.debug.print("Hello, {s}!", .{"world"}); }</textarea>
 		<button onclick="runCode()">Compile</button>
+		<button onclick="fmtCode()">Format</button>
 		<div id="stdout"></div>
 	</main>
 </body>
