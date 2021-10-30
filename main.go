@@ -3,11 +3,13 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gorilla/handlers"
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
+	"github.com/rs/zerolog"
 	"github.com/sethvargo/go-limiter/httplimit"
 	"github.com/sethvargo/go-limiter/memorystore"
 	"github.com/unrolled/secure"
@@ -37,13 +39,15 @@ func main() {
 		log.Fatal(err)
 	}
 
+	logger := zerolog.New(os.Stdout).With().Timestamp().Logger()
+
 	router := httprouter.New()
 	router.ServeFiles("/*filepath", http.Dir("static"))
 
-	router.Handler(http.MethodPost, "/server/run", http.HandlerFunc(Run))
-	router.Handler(http.MethodPost, "/server/fmt", http.HandlerFunc(Fmt))
-
 	// We don't rate-limit the static files. So we have to wrap the router with the rate limiting handler.
-	chain := alice.New(securitySettings().Handler, handlers.CompressHandler).Then(rlMiddle.Handle(router))
+	router.Handler(http.MethodPost, "/server/run", rlMiddle.Handle(http.HandlerFunc(Run)))
+	router.Handler(http.MethodPost, "/server/fmt", rlMiddle.Handle(http.HandlerFunc(Fmt)))
+
+	chain := alice.New(securitySettings().Handler, handlers.CompressHandler, handlers.RecoveryHandler()).Then(LoggingMiddleware(router, logger))
 	log.Fatal(http.ListenAndServe(":8080", chain))
 }

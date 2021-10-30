@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/rs/zerolog"
 )
 
 func TestBodySizeLimit(t *testing.T) {
@@ -16,7 +18,7 @@ func TestBodySizeLimit(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(Run)
+	handler := LoggingMiddleware(http.HandlerFunc(Run), zerolog.Nop())
 
 	handler.ServeHTTP(rr, req)
 
