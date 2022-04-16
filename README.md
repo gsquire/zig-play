@@ -39,7 +39,7 @@ is causing issues to the service.
 To the best of my ability, I will try and keep this online.
 
 ### Contact
-Feel free to email me at my listed address with any other questions or comments.
+Feel free to write to hello@zig-play.dev with any questions or comments.
 
 ### License
 MIT
