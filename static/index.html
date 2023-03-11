@@ -45,7 +45,7 @@
     <main>
       <h1>Zig Playground</h1>
       <p>Source:</p>
-      <textarea id="code" placeholder="const std = ..." spellcheck="false">const std = @import("std"); pub fn main() void { std.debug.print("Hello, {s}!", .{"world"}); }</textarea>
+        <textarea id="code" placeholder="const std = ..." spellcheck="false">const std = @import("std"); const builtin = @import("builtin"); pub fn main() void { std.debug.print("Hello, {s}! (using Zig Version: {})", .{"world", builtin.zig_version}); }</textarea>
       <button onclick="runCode()">Run</button>
       <button onclick="fmtCode()">Format</button>
       <div id="stdout"></div>
