@@ -12,5 +12,6 @@ RUN wget -q https://ziglang.org/download/${version}/zig-linux-x86_64-${version}.
     rm -rf zig-linux-x86_64-${version}*
 COPY zig-play .
 COPY static/ static/
+RUN sed -i "s/###version###/${version}/" static/index.html
 RUN echo ${version} > static/zig-version
 ENTRYPOINT ./zig-play
