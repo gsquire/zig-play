@@ -54,7 +54,8 @@ func execute(w http.ResponseWriter, r *http.Request, command Command) {
 	defer r.Body.Close()
 
 	// Set up the temporary resources.
-	dir, err := ioutil.TempDir("", "playground")
+	playgroundDir := os.Getenv("PLAYGROUND_DIR")
+	dir, err := ioutil.TempDir(playgroundDir, "playground")
 	if err != nil {
 		logger.Error().Err(err).Msg("making the temporary directory")
 		http.Error(w, "creating temporary directory", http.StatusInternalServerError)
