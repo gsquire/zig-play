@@ -13,4 +13,11 @@ RUN wget -q https://ziglang.org/download/${version}/zig-linux-x86_64-${version}.
 COPY zig-play .
 COPY static/ static/
 RUN sed -i "s/###version###/${version}/" static/index.html
+RUN groupadd -r run && \
+    useradd -r -g run -s /usr/sbin/nologin runner && \
+    mkdir playground && \
+    chown -R runner:run playground
+ENV ZIG_GLOBAL_CACHE_DIR=playground
+ENV PLAYGROUND_DIR=playground
+USER runner
 ENTRYPOINT ./zig-play
