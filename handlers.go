@@ -77,7 +77,7 @@ func execute(w http.ResponseWriter, r *http.Request, command Command) {
 	// We only have two commands for now.
 	var output []byte
 	if command == R {
-		output, err = exec.CommandContext(ctx, zigExe, "run", tmpSource).CombinedOutput()
+		output, err = exec.CommandContext(ctx, zigExe, "run", "--global-cache-dir", dir, tmpSource).CombinedOutput()
 	} else {
 		cmd := fmt.Sprintf("cat %s | %s fmt --stdin", tmpSource, zigExe)
 		output, err = exec.CommandContext(ctx, "bash", "-c", cmd).CombinedOutput()
