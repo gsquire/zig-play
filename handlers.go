@@ -79,7 +79,8 @@ func execute(w http.ResponseWriter, r *http.Request, command Command) {
 	if command == R {
 		output, err = exec.CommandContext(ctx, zigExe, "run", "--global-cache-dir", dir, tmpSource).CombinedOutput()
 	} else {
-		cmd := fmt.Sprintf("cat %s | %s fmt --stdin", tmpSource, zigExe)
+		// The global cache directory option is not available for this command.
+		cmd := fmt.Sprintf("ZIG_GLOBAL_CACHE_DIR=%s cat %s | %s fmt --stdin", dir, tmpSource, zigExe)
 		output, err = exec.CommandContext(ctx, "bash", "-c", cmd).CombinedOutput()
 	}
 
