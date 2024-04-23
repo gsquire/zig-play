@@ -70,8 +70,8 @@ func execute(w http.ResponseWriter, r *http.Request, command Command) {
 		return
 	}
 
-	// Currently we cap compilation times at ten seconds.
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	// Currently we cap compilation times at thirty seconds.
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	// We only have two commands for now.
@@ -80,7 +80,7 @@ func execute(w http.ResponseWriter, r *http.Request, command Command) {
 		output, err = exec.CommandContext(ctx, zigExe, "run", "--global-cache-dir", dir, tmpSource).CombinedOutput()
 	} else {
 		// The global cache directory option is not available for this command.
-		cmd := fmt.Sprintf("ZIG_GLOBAL_CACHE_DIR=%s cat %s | %s fmt --stdin", dir, tmpSource, zigExe)
+		cmd := fmt.Sprintf("cat %s | ZIG_GLOBAL_CACHE_DIR=%s %s fmt --stdin", tmpSource, dir, zigExe)
 		output, err = exec.CommandContext(ctx, "bash", "-c", cmd).CombinedOutput()
 	}
 
