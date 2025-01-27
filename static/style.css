@@ -1,47 +1,102 @@
-* {
-     font-family: sans-serif;
+:root {
+    --background-color: #FFFFFF;
+    --color: #000000;
+    --border: rgb(171, 171, 171);
 }
 
- main {
-     display: block;
-     width: 80vw;
-     margin: 0 auto;
+/* Dark mode colors. */
+[data-theme="dark"] {
+    --background-color: #111;
+    --color: #bbb;
+    --border: rgb(83, 84, 85);
 }
 
- h1 {
-     font-size: 2.5rem;
+/* Don't show dark mode button when in dark mode */
+[data-theme="dark"] #toggle-dark {
+    display: none;
 }
 
- textarea, #stdout {
-     display: block;
-     padding: 1rem;
-     margin: 2rem 0;
-     font-family: monospace;
-     width: 50vw;
-     height: 20vh;
+/* Don't show light mode button when in light mode */
+[data-theme="light"] #toggle-light {
+    display: none;
 }
 
- textarea {
-     border: none;
-     background: #ddd;
+h1,
+p,
+button {
+    font-family: sans-serif;
 }
 
- #stdout {
-     border: 1px dashed gray;
-     overflow: scroll;
-     white-space: pre;
+div {
+    box-sizing: border-box;
 }
 
- button {
-     font-size: 1rem;
-     padding: 0.6rem;
-     border: none;
-     background: lightblue;
-     cursor: pointer;
+body {
+    color: var(--color);
+    background-color: var(--background-color);
 }
 
- @media only screen and (max-width: 800px) {
-     textarea, #stdout {
-         width: calc(80vw - 2rem);
+main {
+    display: block;
+    width: 90vw;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.playground-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 0.4rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-right: 0.5rem;
+}
+
+#stdout {
+    display: block;
+    padding: 1rem;
+    margin: 2rem 0;
+    font-family: monospace;
+    width: 100%;
+    height: 20vh;
+    border: 1px dashed gray;
+    overflow: scroll;
+    white-space: pre;
+}
+
+button {
+    font-size: 1rem;
+    padding: 0.6rem;
+    border: none;
+    background: lightblue;
+    cursor: pointer;
+}
+
+#playground {
+    display: flex;
+    flex-direction: column;
+}
+
+#editor {
+    border: solid 1px var(--border);
+    font-size: 0.8rem;
+    /* Ensure the font for ace editor is monospace! */
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Source Code Pro', 'source-code-pro', monospace !important;
+    height: 60vh;
+}
+
+/* On smaller screen widths, the flex-based header and controls
+ * will start to wrap. Make our editor take up less height. */
+@media only screen and (max-width: 800px) {
+    #editor {
+        height: 50vh;
     }
 }
