@@ -79,9 +79,30 @@ function toggleTheme() {
     editor.setTheme(editorTheme);
 }
 
+/**
+ * Our demo code. Setting this up as a variable to keep the HTML clean.
+ * In the future, we can add a map of name/code pairs to allow a select
+ * list with various code examples. For example this snippet would be "hello world"
+ * but we would also allow them to select "zigg zagg" from the examples:
+ * 
+ * https://ziglang.org/learn/samples/
+ * */
+const demoCode = `// You can edit this code!
+// Click into the editor and start typing.
+const std = @import("std");
+const builtin = @import("builtin");
+
+pub fn main() void {
+    std.debug.print("Hello, {s}! (using Zig version: {})", .{ "world", builtin.zig_version });
+}
+`; // Adding trailing space so it matches "format" output.
+
 // On content loaded, set up ace editor and detect dark/light mode and set data-theme appropriately.
 document.addEventListener('DOMContentLoaded', function () {
     editor = ace.edit("editor");
+    // Set the value of our editor to our demo code.
+    // The second param prevents default "select all" behavior.
+    editor.setValue(demoCode, -1);
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         // dark mode
         editor.setTheme("ace/theme/vibrant_ink");

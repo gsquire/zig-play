@@ -11,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.37.5/src-min/ace.js"></script>
   <script src="/playground.js"></script>
 </head>
+
 <body>
   <main>
     <div class="header">
@@ -23,17 +24,12 @@
       </div>
     </div>
     <div id="playground">
-        <div id="editor" class="tab-content">// You can edit this code!
-// Click into the editor and start typing.
-const std = @import("std");
-const builtin = @import("builtin");
-
-pub fn main() void {
-    std.debug.print("Hello, {s}! (using Zig version: {})", .{"world", builtin.zig_version});
-}
-</div>
+      <!-- Our editor. -->
+      <div id="editor"></div>
+      <!-- Cmd output will be printed here. -->
       <div id="stdout"></div>
     </div>
   </main>
 </body>
+
 </html>
