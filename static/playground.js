@@ -53,23 +53,14 @@ async function execute(route) {
     }
 }
 
-/**
- * Executes `runCmd` on the code in the editor.
- */
 async function runCode() {
     execute(runCmd);
 }
 
-/**
- * Executes `fmtCmd` on the code in the editor then replaces the code in the editor with formatted code.
- */
 async function fmtCode() {
     execute(fmtCmd);
 }
 
-/**
- * Toggle the dark/light theme.
- */
 function toggleTheme() {
     // Determine new value of toggle and set data-theme.
     let newValue = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -104,11 +95,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // The second param prevents default "select all" behavior.
     editor.setValue(demoCode, -1);
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        // dark mode
         editor.setTheme("ace/theme/vibrant_ink");
         document.documentElement.setAttribute('data-theme', 'dark');
     } else {
-        // light mode
         editor.setTheme("ace/theme/clouds");
         document.documentElement.setAttribute('data-theme', 'light');
     }

@@ -4,19 +4,16 @@
     --border: rgb(171, 171, 171);
 }
 
-/* Dark mode colors. */
 [data-theme="dark"] {
     --background-color: #111;
     --color: #bbb;
     --border: rgb(83, 84, 85);
 }
 
-/* Don't show dark mode button when in dark mode */
 [data-theme="dark"] #toggle-dark {
     display: none;
 }
 
-/* Don't show light mode button when in light mode */
 [data-theme="light"] #toggle-light {
     display: none;
 }
