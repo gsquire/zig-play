@@ -1,35 +1,31 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Zig Playground</title>
-  <link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
-  <link rel="stylesheet" href="/style.css" type="text/css" />
-  <!-- Load ace editor from CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.37.5/src-min/ace.js"></script>
-  <script src="/playground.js"></script>
-</head>
-
-<body>
-  <main>
-    <div class="header">
-      <h1>Zig Playground (###version###)</h1>
-      <div class="playground-controls">
-        <button onclick="runCode()">Run</button>
-        <button onclick="fmtCode()">Format</button>
-        <button onclick="toggleTheme()" id="toggle-light">Light</button>
-        <button onclick="toggleTheme()" id="toggle-dark">Dark</button>
-      </div>
-    </div>
-    <div id="playground">
-      <!-- Our editor. -->
-      <div id="editor"></div>
-      <!-- Cmd output will be printed here. -->
-      <div id="stdout"></div>
-    </div>
-  </main>
-</body>
-
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Zig Playground</title>
+      <link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
+      <link rel="stylesheet" href="/style.css" type="text/css" />
+      <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.37.5/src-min/ace.js"></script>
+      <script src="/playground.js"></script>
+   </head>
+   <body>
+      <main>
+         <div class="header">
+            <h1>Zig Playground (###version###)</h1>
+            <div class="playground-controls">
+               <button onclick="runCode()">Run</button>
+               <button onclick="fmtCode()">Format</button>
+               <button onclick="toggleTheme()" id="toggle-light">Light</button>
+               <button onclick="toggleTheme()" id="toggle-dark">Dark</button>
+            </div>
+         </div>
+         <div id="playground">
+            <!-- Our editor. -->
+            <div id="editor"></div>
+            <!-- Cmd output will be printed here. -->
+            <div id="stdout"></div>
+         </div>
+      </main>
+   </body>
 </html>
