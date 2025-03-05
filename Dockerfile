@@ -1,5 +1,5 @@
 FROM debian:latest
-ARG version=0.13.0
+ARG version=0.14.0
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y wget xz-utils
 RUN mkdir -p server/static
