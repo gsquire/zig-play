@@ -5,11 +5,11 @@ RUN apt-get install -y wget xz-utils
 RUN mkdir -p server/static
 WORKDIR /server
 RUN wget -q https://ziglang.org/download/${version}/zig-x86_64-linux-${version}.tar.xz && \
-    tar xf zig-linux-x86_64-${version}.tar.xz && \
-    mv zig-linux-x86_64-${version}/zig /usr/local/bin && \
+    tar xf zig-x86_64-linux-${version}.tar.xz && \
+    mv zig-x86_64-linux-${version}/zig /usr/local/bin && \
     mkdir -p /usr/local/bin/lib && \
-    mv zig-linux-x86_64-${version}/lib/* /usr/local/bin/lib && \
-    rm -rf zig-linux-x86_64-${version}*
+    mv zig-x86_64-linux-${version}/lib/* /usr/local/bin/lib && \
+    rm -rf zig-x86_64-linux-${version}*
 COPY zig-play .
 COPY static/ static/
 RUN sed -i "s/###version###/${version}/" static/index.html
