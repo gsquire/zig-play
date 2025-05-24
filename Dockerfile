@@ -4,7 +4,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y wget xz-utils
 RUN mkdir -p server/static
 WORKDIR /server
-RUN wget -q https://ziglang.org/download/${version}/zig-linux-x86_64-${version}.tar.xz && \
+RUN wget -q https://ziglang.org/download/${version}/zig-x86_64-linux-${version}.tar.xz && \
     tar xf zig-linux-x86_64-${version}.tar.xz && \
     mv zig-linux-x86_64-${version}/zig /usr/local/bin && \
     mkdir -p /usr/local/bin/lib && \
