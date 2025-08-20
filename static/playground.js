@@ -84,7 +84,7 @@ const std = @import("std");
 const builtin = @import("builtin");
 
 pub fn main() void {
-    std.debug.print("Hello, {s}! (using Zig version: {})", .{ "world", builtin.zig_version });
+    std.debug.print("Hello, {s}! (using Zig version: {f})", .{ "world", builtin.zig_version });
 }
 `; // Adding trailing space so it matches "format" output.
 
