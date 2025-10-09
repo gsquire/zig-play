@@ -1,6 +1,6 @@
 module github.com/gsquire/zig-play
 
-go 1.25.0
+go 1.25.2
 
 require (
 	github.com/gorilla/handlers v1.5.2
@@ -15,5 +15,5 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/sys v0.37.0 // indirect
 )

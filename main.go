@@ -42,12 +42,10 @@ func main() {
 	logger := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
 	router := httprouter.New()
-	router.ServeFiles("/*filepath", http.Dir("static"))
 
-	// We don't rate-limit the static files. So we have to wrap the router with the rate limiting handler.
-	router.Handler(http.MethodPost, "/server/run", rlMiddle.Handle(http.HandlerFunc(Run)))
-	router.Handler(http.MethodPost, "/server/fmt", rlMiddle.Handle(http.HandlerFunc(Fmt)))
+	router.Handler(http.MethodPost, "/server/run", http.HandlerFunc(Run))
+	router.Handler(http.MethodPost, "/server/fmt", http.HandlerFunc(Fmt))
 
-	chain := alice.New(securitySettings().Handler, handlers.CompressHandler, handlers.RecoveryHandler()).Then(LoggingMiddleware(router, logger))
+	chain := alice.New(rlMiddle.Handle, securitySettings().Handler, handlers.CompressHandler, handlers.RecoveryHandler()).Then(LoggingMiddleware(router, logger))
 	log.Fatal(http.ListenAndServe(":8080", chain))
 }

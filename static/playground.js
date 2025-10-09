@@ -17,12 +17,16 @@ async function execute(route) {
         return;
     }
     stdout.innerHTML = "Waiting for server...";
+
     const code = editor.getValue();
+    var version = document.getElementById("version-select").value;
+
     try {
         const res = await fetch(route, {
             method: 'POST',
             headers: {
-                'Content-Type': 'text/plain'
+                'Content-Type': 'text/plain',
+                'X-Zig-Version': version
             },
             body: code
         });

@@ -2,8 +2,7 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -30,22 +29,20 @@ func LoggingMiddleware(h http.Handler, logger zerolog.Logger) http.Handler {
 	})
 }
 
-func execute(w http.ResponseWriter, r *http.Request, command Command) {
-	const defaultZig = "/usr/local/bin/zig"
+func whichZig(r *http.Request) string {
+	const zigVersion = "X-Zig-Version"
 
-	var zigExe string
-	foundZigExe, zigExeErr := exec.LookPath("zig")
-	if zigExeErr != nil {
-		zigExe = defaultZig
-	} else {
-		zigExe = foundZigExe
-	}
+	return r.Header.Get(zigVersion)
+}
+
+func execute(w http.ResponseWriter, r *http.Request, command Command) {
+	const zvm = "zvm"
 
 	logger := r.Context().Value(CtxLogger).(zerolog.Logger)
 
 	// Limit how big a source file can be. 5MB here.
 	r.Body = http.MaxBytesReader(w, r.Body, 5*1024*1024)
-	zigSource, err := ioutil.ReadAll(r.Body)
+	zigSource, err := io.ReadAll(r.Body)
 	if err != nil {
 		logger.Error().Err(err).Msg("reading the request body")
 		http.Error(w, "reading body", http.StatusInternalServerError)
@@ -64,7 +61,7 @@ func execute(w http.ResponseWriter, r *http.Request, command Command) {
 	defer os.RemoveAll(dir)
 
 	tmpSource := filepath.Join(dir, "play.zig")
-	if err := ioutil.WriteFile(tmpSource, []byte(zigSource), 0666); err != nil {
+	if err := os.WriteFile(tmpSource, []byte(zigSource), 0666); err != nil {
 		logger.Error().Err(err).Msg("copying the source")
 		http.Error(w, "copying zig source", http.StatusInternalServerError)
 		return
@@ -77,11 +74,15 @@ func execute(w http.ResponseWriter, r *http.Request, command Command) {
 	// We only have two commands for now.
 	var output []byte
 	if command == R {
-		output, err = exec.CommandContext(ctx, zigExe, "run", "--global-cache-dir", dir, tmpSource).CombinedOutput()
+		output, err = exec.CommandContext(ctx, zvm, "run", whichZig(r), "run", tmpSource).CombinedOutput()
 	} else {
-		// The global cache directory option is not available for this command.
-		cmd := fmt.Sprintf("cat %s | ZIG_GLOBAL_CACHE_DIR=%s %s fmt --stdin", tmpSource, dir, zigExe)
-		output, err = exec.CommandContext(ctx, "bash", "-c", cmd).CombinedOutput()
+		fd, ferr := os.Open(tmpSource)
+		if ferr != nil {
+			logger.Error().Err(err).Msg("opening the tmp source during fmt command")
+		}
+		cmd := exec.CommandContext(ctx, zvm, "run", whichZig(r), "fmt", "--stdin")
+		cmd.Stdin = fd
+		output, err = cmd.CombinedOutput()
 	}
 
 	if err != nil {
@@ -97,15 +98,9 @@ func execute(w http.ResponseWriter, r *http.Request, command Command) {
 }
 
 func Run(w http.ResponseWriter, r *http.Request) {
-	logger := r.Context().Value(CtxLogger).(zerolog.Logger)
-	logger.Info().Msg("running compile")
-
 	execute(w, r, R)
 }
 
 func Fmt(w http.ResponseWriter, r *http.Request) {
-	logger := r.Context().Value(CtxLogger).(zerolog.Logger)
-	logger.Info().Msg("running format")
-
 	execute(w, r, F)
 }
