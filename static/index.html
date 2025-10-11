@@ -6,14 +6,20 @@
       <title>Zig Playground</title>
       <link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
       <link rel="stylesheet" href="/style.css" type="text/css" />
-      <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.37.5/src-min/ace.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.43.3/src-min/ace.js"></script>
       <script src="/playground.js"></script>
    </head>
    <body>
       <main>
          <div class="header">
-            <h1>Zig Playground (###version###)</h1>
+            <h1>Zig Playground</h1>
             <div class="playground-controls">
+               <label for="version-select">Version:</label>
+               <select id="version-select" name="version-select">
+                  <option value="0.15.1" selected>0.15.1</option>
+                  <option value="0.14.1">0.14.1</option>
+                  <option value="master">master</option>
+               </select>
                <button onclick="runCode()">Run</button>
                <button onclick="fmtCode()">Format</button>
                <button onclick="toggleTheme()" id="toggle-light">Light</button>
