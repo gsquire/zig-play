@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"time"
 
@@ -36,8 +37,6 @@ func whichZig(r *http.Request) string {
 }
 
 func execute(w http.ResponseWriter, r *http.Request, command Command) {
-	const zvm = "zvm"
-
 	logger := r.Context().Value(CtxLogger).(zerolog.Logger)
 
 	// Limit how big a source file can be. 5MB here.
@@ -74,13 +73,14 @@ func execute(w http.ResponseWriter, r *http.Request, command Command) {
 	// We only have two commands for now.
 	var output []byte
 	if command == R {
-		output, err = exec.CommandContext(ctx, zvm, "run", whichZig(r), "run", tmpSource).CombinedOutput()
+		home := os.Getenv("HOME")
+		output, err = exec.CommandContext(ctx, path.Join(home, "zrun.sh"), whichZig(r), tmpSource).CombinedOutput()
 	} else {
 		fd, ferr := os.Open(tmpSource)
 		if ferr != nil {
 			logger.Error().Err(err).Msg("opening the tmp source during fmt command")
 		}
-		cmd := exec.CommandContext(ctx, zvm, "run", whichZig(r), "fmt", "--stdin")
+		cmd := exec.CommandContext(ctx, "zvm", "run", whichZig(r), "fmt", "--stdin")
 		cmd.Stdin = fd
 		output, err = cmd.CombinedOutput()
 	}
