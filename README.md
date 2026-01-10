@@ -7,9 +7,26 @@ It's currently served from this [page](https://zig-play.dev).
 
 ### Setup
 The main server is a Go binary that serves up a single HTML page that allows you to enter your Zig
-code and then run it. To host it yourself, you will need a Go tool chain which can be installed via
-`brew` on a Mac. If you wish to run it locally, you must compile it for your `GOOS` and `GOARCH`.
-You should also have Zig installed and accessible from within your `$PATH` on the host.
+code and then run it.
+
+Installation Requirements:
+- [zvm](https://www.zvm.app/)
+- [go](https://go.dev)
+
+You'll also want a shell script called `zrun.sh` accessible from the home directory of the user you
+run the playground as:
+
+```bash
+#!/bin/bash
+
+set -eu
+
+VERSION=$1
+SOURCE=$2
+TIMEOUT=$YOUR_TIMEOUT_IN_SECONDS
+
+/usr/bin/timeout $TIMEOUT zvm run "$VERSION" run "$SOURCE"
+```
 
 ### Hosting
 I currently am using a VPS and have [Caddy](https://caddyserver.com) as a reverse proxy.
@@ -18,6 +35,13 @@ I currently am using a VPS and have [Caddy](https://caddyserver.com) as a revers
 > What can this playground do?
 
 It is currently set up to simply run and format a single Zig source file. (i.e. `zig run source.zig` & `zig fmt source.zig`)
+
+> Can you share an example request?
+
+```bash
+# main.zig is the file containing the source you want to execute.
+curl -v -H "X-Zig-Version: 0.15.2" https://zig-play.dev/server/run -d @main.zig
+```
 
 > Are there any timeouts?
 
