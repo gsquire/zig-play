@@ -83,6 +83,7 @@ func execute(w http.ResponseWriter, r *http.Request, command Command) {
 		cmd := exec.CommandContext(ctx, "zvm", "run", whichZig(r), "fmt", "--stdin")
 		cmd.Stdin = fd
 		output, err = cmd.CombinedOutput()
+		output = output[:len([]byte(zigSource))]
 	}
 
 	if err != nil {
